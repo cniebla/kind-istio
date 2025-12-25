@@ -2,7 +2,8 @@
 # Description: Test and validate the Kind + Istio + ArgoCD setup
 # Usage: ./test-setup.sh [--full]
 
-set -euo pipefail
+set -uo pipefail
+# Note: Not using -e as we want to continue testing even when some checks fail
 
 readonly CLUSTER_NAME="istio-learning"
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
