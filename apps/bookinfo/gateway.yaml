@@ -1,0 +1,20 @@
+# Bookinfo Gateway - External access point
+# Routes external traffic to the Bookinfo application
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: bookinfo-gateway
+  namespace: bookinfo
+  labels:
+    app.kubernetes.io/name: bookinfo
+    app.kubernetes.io/part-of: kind-istio
+spec:
+  selector:
+    istio: ingressgateway  # Use Istio default ingress gateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"  # Accept all hosts for learning environment

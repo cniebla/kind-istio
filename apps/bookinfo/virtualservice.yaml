@@ -1,0 +1,129 @@
+# Bookinfo VirtualService - Traffic routing rules
+# Routes incoming requests to the productpage service
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: bookinfo
+  namespace: bookinfo
+  labels:
+    app.kubernetes.io/name: bookinfo
+    app.kubernetes.io/part-of: kind-istio
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - bookinfo-gateway
+  http:
+    - match:
+        - uri:
+            exact: /productpage
+        - uri:
+            prefix: /static
+        - uri:
+            exact: /login
+        - uri:
+            exact: /logout
+        - uri:
+            prefix: /api/v1/products
+      route:
+        - destination:
+            host: productpage
+            port:
+              number: 9080
+---
+# VirtualService for reviews - demonstrates traffic management
+# By default, routes to all versions (round-robin)
+# Uncomment specific routing rules to test traffic shifting
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: reviews
+  namespace: bookinfo
+  labels:
+    app.kubernetes.io/name: bookinfo
+    app.kubernetes.io/part-of: kind-istio
+spec:
+  hosts:
+    - reviews
+  http:
+    # Default: route to all versions (round-robin)
+    - route:
+        - destination:
+            host: reviews
+            subset: v1
+          weight: 34
+        - destination:
+            host: reviews
+            subset: v2
+          weight: 33
+        - destination:
+            host: reviews
+            subset: v3
+          weight: 33
+
+    # EXAMPLE: Route all traffic to v1 (no ratings)
+    # - route:
+    #     - destination:
+    #         host: reviews
+    #         subset: v1
+
+    # EXAMPLE: 50/50 split between v2 and v3
+    # - route:
+    #     - destination:
+    #         host: reviews
+    #         subset: v2
+    #       weight: 50
+    #     - destination:
+    #         host: reviews
+    #         subset: v3
+    #       weight: 50
+
+    # EXAMPLE: Route based on user header (A/B testing)
+    # - match:
+    #     - headers:
+    #         end-user:
+    #           exact: jason
+    #   route:
+    #     - destination:
+    #         host: reviews
+    #         subset: v3
+    # - route:
+    #     - destination:
+    #         host: reviews
+    #         subset: v1
+---
+# VirtualService for ratings
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: ratings
+  namespace: bookinfo
+  labels:
+    app.kubernetes.io/name: bookinfo
+    app.kubernetes.io/part-of: kind-istio
+spec:
+  hosts:
+    - ratings
+  http:
+    - route:
+        - destination:
+            host: ratings
+            subset: v1
+---
+# VirtualService for details
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: details
+  namespace: bookinfo
+  labels:
+    app.kubernetes.io/name: bookinfo
+    app.kubernetes.io/part-of: kind-istio
+spec:
+  hosts:
+    - details
+  http:
+    - route:
+        - destination:
+            host: details
+            subset: v1

@@ -1,0 +1,38 @@
+# Bookinfo Application
+# Deploys the Istio Bookinfo demo application
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bookinfo
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: bookinfo
+    app.kubernetes.io/part-of: kind-istio
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: git@github.com:cniebla/kind-istio.git
+    targetRevision: HEAD
+    path: apps/bookinfo
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: bookinfo
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+
+  # Ignore differences in sidecar-injected fields
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/template/metadata/annotations

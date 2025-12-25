@@ -1,0 +1,92 @@
+# Bookinfo DestinationRules - Define service subsets (versions)
+# These rules define which pod labels correspond to which version subset
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: productpage
+  namespace: bookinfo
+  labels:
+    app.kubernetes.io/name: bookinfo
+    app.kubernetes.io/part-of: kind-istio
+spec:
+  host: productpage
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        h2UpgradePolicy: UPGRADE
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: reviews
+  namespace: bookinfo
+  labels:
+    app.kubernetes.io/name: bookinfo
+    app.kubernetes.io/part-of: kind-istio
+spec:
+  host: reviews
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        h2UpgradePolicy: UPGRADE
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+    - name: v2
+      labels:
+        version: v2
+    - name: v3
+      labels:
+        version: v3
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: ratings
+  namespace: bookinfo
+  labels:
+    app.kubernetes.io/name: bookinfo
+    app.kubernetes.io/part-of: kind-istio
+spec:
+  host: ratings
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        h2UpgradePolicy: UPGRADE
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: details
+  namespace: bookinfo
+  labels:
+    app.kubernetes.io/name: bookinfo
+    app.kubernetes.io/part-of: kind-istio
+spec:
+  host: details
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        h2UpgradePolicy: UPGRADE
+  subsets:
+    - name: v1
+      labels:
+        version: v1

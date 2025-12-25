@@ -1,0 +1,34 @@
+# Secrets and credentials
+*.pem
+*.key
+*.crt
+*.p12
+.env
+.env.*
+secrets/
+credentials/
+
+# Kubeconfig
+kubeconfig*
+*.kubeconfig
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# ArgoCD CLI config
+~/.argocd/
+
+# Helm
+charts/*.tgz

@@ -1,0 +1,27 @@
+# ArgoCD Installation
+# This file references the official ArgoCD installation manifest.
+# The actual installation is done by the init-argocd.sh script which
+# applies the manifest directly from the ArgoCD GitHub releases.
+#
+# Version: v3.2.3
+# Source: https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.3/manifests/install.yaml
+#
+# For manual installation:
+#   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.3/manifests/install.yaml
+#
+# This approach ensures we always use the official, tested manifest
+# rather than maintaining a local copy that could become outdated.
+---
+# Placeholder to indicate this is managed externally
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-install-info
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd
+    app.kubernetes.io/part-of: kind-istio
+data:
+  version: "v3.2.3"
+  source: "https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.3/manifests/install.yaml"
+  installation-method: "scripts/init-argocd.sh"

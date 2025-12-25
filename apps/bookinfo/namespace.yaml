@@ -1,0 +1,10 @@
+# Bookinfo namespace with Istio sidecar injection enabled
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bookinfo
+  labels:
+    app.kubernetes.io/name: bookinfo
+    app.kubernetes.io/part-of: kind-istio
+    # Enable automatic Istio sidecar injection
+    istio-injection: enabled

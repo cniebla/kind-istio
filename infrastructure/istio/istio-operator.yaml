@@ -1,0 +1,105 @@
+# Istio Operator configuration for Kind learning environment
+# Profile: demo (includes all components with high observability)
+# Version: 1.28.2
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: istio-learning
+  namespace: istio-system
+spec:
+  # Demo profile: full-featured for learning
+  profile: demo
+
+  # Global mesh configuration
+  meshConfig:
+    # Enable access logging for all workloads
+    accessLogFile: /dev/stdout
+    accessLogFormat: |
+      [%START_TIME%] "%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%"
+      %RESPONSE_CODE% %RESPONSE_FLAGS% %BYTES_RECEIVED% %BYTES_SENT%
+      %DURATION% "%REQ(X-FORWARDED-FOR)%" "%REQ(USER-AGENT)%"
+      "%REQ(X-REQUEST-ID)%" "%REQ(:AUTHORITY)%" "%UPSTREAM_HOST%"
+
+    # Enable tracing (Zipkin-compatible)
+    enableTracing: true
+    defaultConfig:
+      tracing:
+        sampling: 100.0  # 100% sampling for learning
+
+    # Outbound traffic policy
+    outboundTrafficPolicy:
+      mode: ALLOW_ANY
+
+  # Component-specific configuration
+  components:
+    # Istiod (control plane)
+    pilot:
+      enabled: true
+      k8s:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+
+    # Ingress Gateway
+    ingressGateways:
+      - name: istio-ingressgateway
+        enabled: true
+        k8s:
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          service:
+            type: NodePort
+            ports:
+              - name: http2
+                port: 80
+                targetPort: 8080
+                nodePort: 30080
+              - name: https
+                port: 443
+                targetPort: 8443
+                nodePort: 30443
+          # Schedule on control-plane node (has port mappings)
+          nodeSelector:
+            ingress-ready: "true"
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+
+    # Egress Gateway (enabled for demo profile)
+    egressGateways:
+      - name: istio-egressgateway
+        enabled: true
+        k8s:
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+
+  # Values for Helm charts
+  values:
+    global:
+      # Proxy (sidecar) configuration
+      proxy:
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+      # Log level for debugging
+      logging:
+        level: "default:info"

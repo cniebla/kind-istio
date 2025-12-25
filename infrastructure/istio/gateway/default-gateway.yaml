@@ -1,0 +1,33 @@
+# Default Istio Gateway for the learning environment
+# This gateway handles HTTP/HTTPS traffic for all applications
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: default-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    # HTTP server (port 80)
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+      # Optional: redirect HTTP to HTTPS
+      # tls:
+      #   httpsRedirect: true
+
+    # HTTPS server (port 443) - currently passthrough
+    # Uncomment and add certificate for TLS termination
+    # - port:
+    #     number: 443
+    #     name: https
+    #     protocol: HTTPS
+    #   hosts:
+    #     - "*"
+    #   tls:
+    #     mode: SIMPLE
+    #     credentialName: default-tls-cert
