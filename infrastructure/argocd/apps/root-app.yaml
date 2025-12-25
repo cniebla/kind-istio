@@ -14,7 +14,7 @@ spec:
   project: default
 
   source:
-    repoURL: git@github.com:cniebla/kind-istio.git
+    repoURL: https://github.com/cniebla/kind-istio.git
     targetRevision: HEAD
     path: infrastructure/argocd/apps
 
