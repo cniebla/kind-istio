@@ -71,7 +71,7 @@ The [Bookinfo](https://istio.io/latest/docs/examples/bookinfo/) application demo
 - **reviews**: Book reviews with 3 versions (Java)
 - **ratings**: Star ratings (Node.js)
 
-Access after deployment: http://localhost:8888/productpage
+Access after deployment: http://localhost:30000/productpage
 
 ## Learning Resources
 

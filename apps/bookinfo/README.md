@@ -8,7 +8,7 @@ Istio's sample polyglot microservices application for demonstrating service mesh
                          ┌─────────────────────┐
                          │   Istio Ingress     │
                          │     Gateway         │
-                         │  (localhost:80)     │
+                         │ (localhost:30000)   │
                          └──────────┬──────────┘
                                     │
                                     ▼
@@ -95,7 +95,7 @@ kubectl get pods -n bookinfo -w
 After deployment, access the productpage at:
 
 ```
-http://localhost:8888/productpage
+http://localhost:30000/productpage
 ```
 
 Refresh the page multiple times to see different reviews versions (round-robin by default).

@@ -84,10 +84,12 @@ The ingress gateway is configured with NodePort on the control-plane node:
 
 | Protocol | Host Port | NodePort | URL |
 |----------|-----------|----------|-----|
-| HTTP | 8888 | 30080 | http://localhost:8888 |
-| HTTPS | 8443 | 30443 | https://localhost:8443 |
+| HTTP | 30000 | 30000 | http://localhost:30000 |
+| HTTPS | 30001 | 30001 | https://localhost:30001 |
 
-Traffic flow: `localhost:80 -> Kind node:80 -> NodePort:30080 -> IngressGateway:8080`
+Traffic flow: `localhost:30000 -> Kind node:30000 -> NodePort:30000 -> IngressGateway:80`
+
+**Note**: The ingress gateway service is patched to use NodePorts 30000/30001 which are directly mapped through Kind to the host.
 
 ## Configuration Details
 

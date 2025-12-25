@@ -16,7 +16,7 @@ Kind cluster configuration and lifecycle management scripts.
 - **Name**: `istio-learning`
 - **Kubernetes Version**: v1.34.3
 - **Nodes**: 1 control-plane + 1 worker (optimized for 32GB RAM)
-- **Port Mappings**: 80, 443 (for Istio ingress gateway)
+- **Port Mappings**: 8888/8443 (host), 30000/30001 (NodePort for Istio ingress)
 
 ## Usage
 
@@ -33,12 +33,16 @@ Kind cluster configuration and lifecycle management scripts.
 
 ## Port Mappings
 
-The control-plane node exposes ports for Istio ingress:
+The control-plane node exposes ports for Istio ingress gateway:
 
 | Host Port | Container Port | Purpose |
 |-----------|----------------|---------|
-| 80 | 80 | HTTP traffic |
-| 443 | 443 | HTTPS traffic |
+| 8888 | 80 | HTTP traffic (alternative to 80 if in use) |
+| 8443 | 443 | HTTPS traffic (alternative to 443 if in use) |
+| 30000 | 30000 | NodePort for HTTP (recommended) |
+| 30001 | 30001 | NodePort for HTTPS |
+
+**Note**: Use `http://localhost:30000` for accessing services through Istio ingress.
 
 ## Troubleshooting
 
