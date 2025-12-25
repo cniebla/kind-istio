@@ -295,7 +295,7 @@ test_http_access() {
 
     # Test productpage
     local http_code
-    http_code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 http://localhost/productpage 2>/dev/null || echo "000")
+    http_code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 http://localhost:8888/productpage 2>/dev/null || echo "000")
 
     if [[ "${http_code}" == "200" ]]; then
         test_pass "Productpage accessible (HTTP ${http_code})"
@@ -330,7 +330,7 @@ show_summary() {
         echo -e "${GREEN}All tests passed!${NC}"
         echo ""
         echo "Your environment is ready. Access:"
-        echo "  - Bookinfo: http://localhost/productpage"
+        echo "  - Bookinfo: http://localhost:8888/productpage"
         echo "  - ArgoCD:   https://localhost:8080 (run ./scripts/port-forward.sh)"
     else
         echo -e "${RED}Some tests failed.${NC}"

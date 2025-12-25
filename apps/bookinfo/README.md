@@ -95,7 +95,7 @@ kubectl get pods -n bookinfo -w
 After deployment, access the productpage at:
 
 ```
-http://localhost/productpage
+http://localhost:8888/productpage
 ```
 
 Refresh the page multiple times to see different reviews versions (round-robin by default).

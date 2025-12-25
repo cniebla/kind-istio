@@ -1,6 +1,6 @@
 # Bookinfo Gateway - External access point
 # Routes external traffic to the Bookinfo application
-apiVersion: networking.istio.io/v1
+apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
   name: bookinfo-gateway

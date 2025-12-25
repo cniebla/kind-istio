@@ -32,3 +32,6 @@ Thumbs.db
 
 # Helm
 charts/*.tgz
+
+# Downloaded Istio
+istio-*/

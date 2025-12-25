@@ -1,6 +1,6 @@
 # Bookinfo VirtualService - Traffic routing rules
 # Routes incoming requests to the productpage service
-apiVersion: networking.istio.io/v1
+apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: bookinfo
@@ -34,7 +34,7 @@ spec:
 # VirtualService for reviews - demonstrates traffic management
 # By default, routes to all versions (round-robin)
 # Uncomment specific routing rules to test traffic shifting
-apiVersion: networking.istio.io/v1
+apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: reviews
@@ -93,7 +93,7 @@ spec:
     #         subset: v1
 ---
 # VirtualService for ratings
-apiVersion: networking.istio.io/v1
+apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: ratings
@@ -111,7 +111,7 @@ spec:
             subset: v1
 ---
 # VirtualService for details
-apiVersion: networking.istio.io/v1
+apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: details

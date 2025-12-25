@@ -14,13 +14,13 @@ nodes:
           kubeletExtraArgs:
             node-labels: "ingress-ready=true"
     extraPortMappings:
-      # HTTP traffic for Istio ingress gateway
+      # HTTP traffic for Istio ingress gateway (using 8888 to avoid conflict with Apache)
       - containerPort: 80
-        hostPort: 80
+        hostPort: 8888
         protocol: TCP
       # HTTPS traffic for Istio ingress gateway
       - containerPort: 443
-        hostPort: 443
+        hostPort: 8443
         protocol: TCP
       # NodePort range for additional services if needed
       - containerPort: 30000

@@ -1,6 +1,6 @@
 # Default Istio Gateway for the learning environment
 # This gateway handles HTTP/HTTPS traffic for all applications
-apiVersion: networking.istio.io/v1
+apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
   name: default-gateway

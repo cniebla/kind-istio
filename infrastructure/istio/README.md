@@ -84,8 +84,8 @@ The ingress gateway is configured with NodePort on the control-plane node:
 
 | Protocol | Host Port | NodePort | URL |
 |----------|-----------|----------|-----|
-| HTTP | 80 | 30080 | http://localhost |
-| HTTPS | 443 | 30443 | https://localhost |
+| HTTP | 8888 | 30080 | http://localhost:8888 |
+| HTTPS | 8443 | 30443 | https://localhost:8443 |
 
 Traffic flow: `localhost:80 -> Kind node:80 -> NodePort:30080 -> IngressGateway:8080`
 
