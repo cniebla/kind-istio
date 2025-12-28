@@ -33,7 +33,7 @@ usage() {
     echo "  --help    Show this help message"
     echo ""
     echo "Services:"
-    echo "  ArgoCD:   https://localhost:8080"
+    echo "  ArgoCD:   https://localhost:8081"
     echo "  Bookinfo: http://localhost/productpage (via Istio ingress)"
 }
 
@@ -70,12 +70,12 @@ forward_argocd() {
     fi
 
     log_info "Starting ArgoCD port-forward..."
-    log_info "ArgoCD UI: https://localhost:8080"
+    log_info "ArgoCD UI: https://localhost:8081"
     echo ""
     log_warn "Press Ctrl+C to stop"
     echo ""
 
-    kubectl port-forward svc/argocd-server -n argocd 8080:443
+    kubectl port-forward svc/argocd-server -n argocd 8081:443
 }
 
 forward_all() {
@@ -87,14 +87,14 @@ forward_all() {
     log_info "Starting port-forwards..."
     echo ""
     echo "Services available:"
-    echo "  - ArgoCD UI:   https://localhost:8080"
+    echo "  - ArgoCD UI:   https://localhost:8081"
     echo "  - Bookinfo:    http://localhost/productpage (via Istio ingress on port 80)"
     echo ""
     log_warn "Press Ctrl+C to stop all"
     echo ""
 
     # Start ArgoCD port-forward in background
-    kubectl port-forward svc/argocd-server -n argocd 8080:443 &
+    kubectl port-forward svc/argocd-server -n argocd 8081:443 &
     local argocd_pid=$!
 
     # Trap to cleanup on exit

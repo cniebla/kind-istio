@@ -331,7 +331,7 @@ show_summary() {
         echo ""
         echo "Your environment is ready. Access:"
         echo "  - Bookinfo: http://localhost:30000/productpage"
-        echo "  - ArgoCD:   https://localhost:8080 (run ./scripts/port-forward.sh)"
+        echo "  - ArgoCD:   https://localhost:8081 (run ./scripts/port-forward.sh)"
     else
         echo -e "${RED}Some tests failed.${NC}"
         echo ""

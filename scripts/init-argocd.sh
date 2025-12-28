@@ -222,13 +222,13 @@ show_access_info() {
     echo ""
     echo "Access the ArgoCD UI:"
     echo "  1. Run: ./scripts/port-forward.sh"
-    echo "  2. Open: https://localhost:8080"
+    echo "  2. Open: https://localhost:8081"
     echo ""
     echo "Or use kubectl port-forward directly:"
-    echo "  kubectl port-forward svc/argocd-server -n argocd 8080:443"
+    echo "  kubectl port-forward svc/argocd-server -n argocd 8081:443"
     echo ""
     echo "ArgoCD CLI login:"
-    echo "  argocd login localhost:8080 --username admin --password '${password}' --insecure"
+    echo "  argocd login localhost:8081 --username admin --password '${password}' --insecure"
     echo ""
 }
 

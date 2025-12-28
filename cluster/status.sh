@@ -88,7 +88,7 @@ show_status() {
 
     section "Quick Access"
     echo "Bookinfo:  http://localhost/productpage"
-    echo "ArgoCD:    https://localhost:8080 (requires port-forward)"
+    echo "ArgoCD:    https://localhost:8081 (requires port-forward)"
     echo ""
 }
 

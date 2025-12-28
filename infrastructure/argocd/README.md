@@ -22,7 +22,7 @@ ArgoCD v3.2.3 installation and configuration for GitOps-based deployments.
 
 # Access UI
 ./scripts/port-forward.sh
-# Open https://localhost:8080
+# Open https://localhost:8081
 ```
 
 ## Installation Details
@@ -145,10 +145,10 @@ spec:
 ./scripts/port-forward.sh
 
 # Or directly
-kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl port-forward svc/argocd-server -n argocd 8081:443
 ```
 
-Then open: https://localhost:8080
+Then open: https://localhost:8081
 
 ### Credentials
 
@@ -172,7 +172,7 @@ curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/download/v3.2.3
 chmod +x argocd && sudo mv argocd /usr/local/bin/
 
 # Login (with port-forward running)
-argocd login localhost:8080 --username admin --password '<password>' --insecure
+argocd login localhost:8081 --username admin --password '<password>' --insecure
 
 # List applications
 argocd app list

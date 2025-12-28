@@ -51,7 +51,7 @@ Starts port forwarding for accessing ArgoCD and Bookinfo.
 ./port-forward.sh
 
 # Access points:
-# - ArgoCD UI: https://localhost:8080
+# - ArgoCD UI: https://localhost:8081
 # - Bookinfo: http://localhost (via Istio ingress)
 ```
 

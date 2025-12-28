@@ -43,7 +43,7 @@ main() {
     echo "Username: admin"
     echo "Password: ${password}"
     echo ""
-    echo "Access UI: https://localhost:8080"
+    echo "Access UI: https://localhost:8081"
     echo "(Run ./scripts/port-forward.sh first)"
     echo ""
 }

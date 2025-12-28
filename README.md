@@ -33,7 +33,7 @@ istioctl install -f infrastructure/istio/istio-operator.yaml -y
 
 # 4. Access ArgoCD UI
 ./scripts/port-forward.sh
-# Open http://localhost:8080
+# Open https://localhost:8081
 ```
 
 ## Project Structure
