@@ -8,6 +8,7 @@ Platform-level components that provide the foundation for application workloads.
 |-----------|-----------|-------------|
 | Istio | `istio/` | Service mesh for traffic management and observability |
 | ArgoCD | `argocd/` | GitOps continuous delivery |
+| Observability | `observability/` | Prometheus, Grafana, Kiali, Jaeger (resource-constrained) |
 
 ## Installation Order
 
@@ -33,10 +34,20 @@ GitOps controller providing:
 
 See [argocd/README.md](argocd/README.md) for details.
 
+## Observability
+
+Monitoring and tracing stack deployed via ArgoCD:
+- Prometheus - Metrics collection (1-day retention)
+- Grafana - Pre-configured Istio dashboards
+- Kiali - Service mesh visualization
+- Jaeger - Distributed tracing (24-hour retention)
+
+See [observability/README.md](observability/README.md) for details.
+
 ## Namespace Layout
 
 | Namespace | Purpose |
 |-----------|---------|
-| `istio-system` | Istio control plane components |
+| `istio-system` | Istio control plane and observability components |
 | `argocd` | ArgoCD server and controllers |
 | `bookinfo` | Demo application (Istio sidecar injection enabled) |

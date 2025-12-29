@@ -1,0 +1,18 @@
+# Observability Stack for Learning Environment
+# Resource-constrained versions of Istio sample addons
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: istio-system
+
+resources:
+  - prometheus.yaml
+  - grafana.yaml
+  - kiali.yaml
+  - jaeger.yaml
+
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: istio-observability
+      environment: learning
+    includeSelectors: false

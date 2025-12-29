@@ -1,0 +1,32 @@
+# Observability Stack Application
+# Deploys Prometheus, Grafana, Kiali, and Jaeger for Istio monitoring
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: observability
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: observability
+    app.kubernetes.io/part-of: kind-istio
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/cniebla/kind-istio.git
+    targetRevision: HEAD
+    path: infrastructure/observability
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: istio-system
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
