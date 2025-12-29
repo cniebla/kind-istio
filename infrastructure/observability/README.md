@@ -10,7 +10,7 @@ Resource-constrained observability addons for the Istio learning environment.
 | Grafana | Dashboards | 256Mi | N/A |
 | Kiali | Service mesh console | 512Mi | N/A |
 | Jaeger | Distributed tracing | 512Mi | 24 hours |
-| Loki | Log aggregation | 1Gi + 64Mi (sidecar) | 24 hours |
+| Loki | Log aggregation | 1Gi | 24 hours |
 
 ## Resource Summary
 
@@ -55,6 +55,7 @@ These manifests are based on `istio-1.28.2/samples/addons/` with:
 3. **Reduced trace storage** - Jaeger max traces reduced from 50k to 10k
 4. **Reduced Loki storage** - PVC reduced from 10Gi to 2Gi
 5. **Removed pod anti-affinity** - Loki anti-affinity removed for single-node Kind cluster
+6. **Removed Loki sidecar** - Rules sidecar removed (not needed for basic log aggregation)
 
 ## Customization
 

@@ -319,8 +319,6 @@ spec:
               mountPath: /etc/loki/runtime-config
             - name: storage
               mountPath: /var/loki
-            - name: sc-rules-volume
-              mountPath: "/rules"
           resources:
             requests:
               cpu: 50m
@@ -328,40 +326,7 @@ spec:
             limits:
               cpu: 500m
               memory: 1Gi
-        - name: loki-sc-rules
-          image: "docker.io/kiwigrid/k8s-sidecar:1.30.10"
-          imagePullPolicy: IfNotPresent
-          env:
-            - name: METHOD
-              value: WATCH
-            - name: LABEL
-              value: "loki_rule"
-            - name: FOLDER
-              value: "/rules"
-            - name: RESOURCE
-              value: "both"
-            - name: WATCH_SERVER_TIMEOUT
-              value: "60"
-            - name: WATCH_CLIENT_TIMEOUT
-              value: "60"
-            - name: LOG_LEVEL
-              value: "INFO"
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-              - ALL
-            readOnlyRootFilesystem: true
-          resources:
-            requests:
-              cpu: 10m
-              memory: 32Mi
-            limits:
-              cpu: 100m
-              memory: 64Mi
-          volumeMounts:
-            - name: sc-rules-volume
-              mountPath: "/rules"
+      # Removed loki-sc-rules sidecar (optional, for loading rules from configmaps)
       # Removed podAntiAffinity for single-node Kind cluster
       affinity: {}
       volumes:
@@ -376,8 +341,6 @@ spec:
         - name: runtime-config
           configMap:
             name: loki-runtime
-        - name: sc-rules-volume
-          emptyDir: {}
   volumeClaimTemplates:
     - apiVersion: v1
       kind: PersistentVolumeClaim
