@@ -232,14 +232,14 @@ kind delete cluster --name istio-learning
 
 ### Istio Issues
 ```bash
-# Verify installation
-istioctl verify-install
-
-# Check proxy status
+# Check proxy status (control plane verification)
 istioctl proxy-status
 
 # Analyze configuration
 istioctl analyze
+
+# Check Istio pods
+kubectl get pods -n istio-system
 ```
 
 ### ArgoCD Issues

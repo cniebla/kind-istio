@@ -28,13 +28,16 @@ sudo mv istio-1.28.2/bin/istioctl /usr/local/bin/
 # 1. Install Istio using the operator manifest
 istioctl install -f infrastructure/istio/istio-operator.yaml -y
 
-# 2. Verify installation
-istioctl verify-install
+# 2. Verify control plane is responding
+istioctl proxy-status
 
 # 3. Check Istio pods are running
 kubectl get pods -n istio-system
 
-# 4. Apply the default gateway
+# 4. Analyze configuration (optional)
+istioctl analyze -n istio-system
+
+# 5. Apply the default gateway
 kubectl apply -f infrastructure/istio/gateway/default-gateway.yaml
 ```
 
