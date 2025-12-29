@@ -16,6 +16,7 @@ PROMETHEUS_PORT=9091
 GRAFANA_PORT=3000
 KIALI_PORT=20001
 JAEGER_PORT=16686
+LOKI_PORT=3100
 
 # Track background PIDs
 declare -a PIDS=()
@@ -40,6 +41,7 @@ usage() {
     echo "  --grafana     Forward only Grafana (port ${GRAFANA_PORT})"
     echo "  --kiali       Forward only Kiali (port ${KIALI_PORT})"
     echo "  --jaeger      Forward only Jaeger (port ${JAEGER_PORT})"
+    echo "  --loki        Forward only Loki (port ${LOKI_PORT})"
     echo "  --help        Show this help message"
     echo ""
     echo "Without options, forwards all observability UIs."
@@ -49,6 +51,7 @@ usage() {
     echo "  Grafana:     http://localhost:${GRAFANA_PORT}"
     echo "  Kiali:       http://localhost:${KIALI_PORT}"
     echo "  Jaeger:      http://localhost:${JAEGER_PORT}"
+    echo "  Loki:        http://localhost:${LOKI_PORT}"
 }
 
 cleanup() {
@@ -103,6 +106,16 @@ forward_jaeger() {
     PIDS+=($!)
 }
 
+forward_loki() {
+    if ! check_pod_ready "app.kubernetes.io/name=loki"; then
+        log_error "Loki is not running"
+        return 1
+    fi
+    log_info "Loki:       http://localhost:${LOKI_PORT}"
+    kubectl port-forward -n istio-system svc/loki ${LOKI_PORT}:3100 &
+    PIDS+=($!)
+}
+
 forward_all() {
     log_info "Starting all observability port-forwards..."
     echo ""
@@ -111,6 +124,7 @@ forward_all() {
     forward_grafana || true
     forward_kiali || true
     forward_jaeger || true
+    forward_loki || true
 
     if [[ ${#PIDS[@]} -eq 0 ]]; then
         log_error "No observability services are running"
@@ -139,6 +153,9 @@ main() {
             ;;
         --jaeger)
             forward_jaeger
+            ;;
+        --loki)
+            forward_loki
             ;;
         --help)
             usage

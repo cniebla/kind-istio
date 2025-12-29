@@ -10,10 +10,11 @@ Resource-constrained observability addons for the Istio learning environment.
 | Grafana | Dashboards | 256Mi | N/A |
 | Kiali | Service mesh console | 512Mi | N/A |
 | Jaeger | Distributed tracing | 512Mi | 24 hours |
+| Loki | Log aggregation | 512Mi + 64Mi (sidecar) | 24 hours |
 
 ## Resource Summary
 
-Total memory limits: ~2.3Gi (vs ~4Gi+ for default addons)
+Total memory limits: ~2.9Gi (vs ~4Gi+ for default addons)
 
 ## Accessing the UIs
 
@@ -31,6 +32,9 @@ kubectl port-forward -n istio-system svc/kiali 20001:20001
 
 # Jaeger (tracing)
 kubectl port-forward -n istio-system svc/tracing 16686:80
+
+# Loki (logs) - query via Grafana or directly
+kubectl port-forward -n istio-system svc/loki 3100:3100
 ```
 
 ## Grafana Dashboards
@@ -47,8 +51,10 @@ Pre-configured Istio dashboards:
 These manifests are based on `istio-1.28.2/samples/addons/` with:
 
 1. **Resource limits added** - Prevents unbounded memory consumption
-2. **Reduced retention** - 1 day for Prometheus, 24h for Jaeger traces
+2. **Reduced retention** - 1 day for Prometheus, 24h for Jaeger traces, 24h for Loki logs
 3. **Reduced trace storage** - Jaeger max traces reduced from 50k to 10k
+4. **Reduced Loki storage** - PVC reduced from 10Gi to 2Gi
+5. **Removed pod anti-affinity** - Loki anti-affinity removed for single-node Kind cluster
 
 ## Customization
 

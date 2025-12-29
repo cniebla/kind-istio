@@ -10,6 +10,7 @@ resources:
   - grafana.yaml
   - kiali.yaml
   - jaeger.yaml
+  - loki.yaml
 
 labels:
   - pairs:
