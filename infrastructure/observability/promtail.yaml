@@ -49,11 +49,9 @@ data:
       - job_name: kubernetes-pods
         kubernetes_sd_configs:
           - role: pod
+        pipeline_stages:
+          - cri: {}
         relabel_configs:
-          # Only scrape pods with annotation
-          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-            action: drop
-            regex: false
           # Get pod name
           - source_labels: [__meta_kubernetes_pod_name]
             target_label: pod
