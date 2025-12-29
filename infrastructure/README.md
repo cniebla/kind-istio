@@ -8,7 +8,7 @@ Platform-level components that provide the foundation for application workloads.
 |-----------|-----------|-------------|
 | Istio | `istio/` | Service mesh for traffic management and observability |
 | ArgoCD | `argocd/` | GitOps continuous delivery |
-| Observability | `observability/` | Prometheus, Grafana, Kiali, Jaeger (resource-constrained) |
+| Observability | `observability/` | Prometheus, Grafana, Kiali, Jaeger, Loki, Promtail |
 
 ## Installation Order
 
@@ -36,11 +36,18 @@ See [argocd/README.md](argocd/README.md) for details.
 
 ## Observability
 
-Monitoring and tracing stack deployed via ArgoCD:
-- Prometheus - Metrics collection (1-day retention)
-- Grafana - Pre-configured Istio dashboards
-- Kiali - Service mesh visualization
-- Jaeger - Distributed tracing (24-hour retention)
+Complete monitoring stack deployed via ArgoCD (~3.5Gi memory):
+
+| Component | Purpose |
+|-----------|---------|
+| Prometheus | Metrics collection (1-day retention) |
+| Grafana | Dashboards with Istio + Loki datasources |
+| Kiali | Service mesh topology visualization |
+| Jaeger | Distributed tracing (24-hour retention) |
+| Loki | Log aggregation (24-hour retention) |
+| Promtail | Log collector (DaemonSet on each node) |
+
+Access all UIs with: `./scripts/observability-ui.sh`
 
 See [observability/README.md](observability/README.md) for details.
 
