@@ -9,6 +9,7 @@ Utility scripts for cluster and application management.
 | `init-argocd.sh` | Install ArgoCD and configure repository credentials |
 | `get-argocd-password.sh` | Retrieve ArgoCD admin password |
 | `port-forward.sh` | Start port forwarding for ArgoCD UI |
+| `observability-ui.sh` | Port-forward all observability UIs (Grafana, Prometheus, etc.) |
 | `test-setup.sh` | Validate the entire setup (cluster, Istio, ArgoCD, Bookinfo) |
 
 ## init-argocd.sh
@@ -54,6 +55,32 @@ Starts port forwarding for accessing ArgoCD and Bookinfo.
 # - ArgoCD UI: https://localhost:8081
 # - Bookinfo: http://localhost (via Istio ingress)
 ```
+
+## observability-ui.sh
+
+Port-forwards all observability UIs for local access.
+
+```bash
+# Forward all UIs
+./observability-ui.sh
+
+# Forward specific services
+./observability-ui.sh --grafana
+./observability-ui.sh --prometheus
+./observability-ui.sh --kiali
+./observability-ui.sh --jaeger
+./observability-ui.sh --loki
+```
+
+### Access Points
+
+| Service | URL | Description |
+|---------|-----|-------------|
+| Grafana | http://localhost:3000 | Dashboards & Loki logs (admin/admin) |
+| Prometheus | http://localhost:9091 | Metrics queries |
+| Kiali | http://localhost:20001 | Service mesh console |
+| Jaeger | http://localhost:16686 | Distributed tracing |
+| Loki | http://localhost:3100 | Log aggregation API |
 
 ## test-setup.sh
 
