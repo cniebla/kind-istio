@@ -46,37 +46,31 @@ data:
       - url: http://loki:3100/loki/api/v1/push
 
     scrape_configs:
-      - job_name: kubernetes-pods
-        kubernetes_sd_configs:
-          - role: pod
+      - job_name: system
+        static_configs:
+          - targets:
+              - localhost
+            labels:
+              job: varlogs
+              __path__: /var/log/*.log
+
+      - job_name: pods
+        static_configs:
+          - targets:
+              - localhost
+            labels:
+              job: pods
+              __path__: /var/log/pods/*/*/*.log
         pipeline_stages:
           - cri: {}
-        relabel_configs:
-          # Drop pods without a name
-          - source_labels: [__meta_kubernetes_pod_name]
-            action: drop
-            regex: ''
-          # Get namespace
-          - source_labels: [__meta_kubernetes_namespace]
-            target_label: namespace
-          # Get pod name
-          - source_labels: [__meta_kubernetes_pod_name]
-            target_label: pod
-          # Get container name
-          - source_labels: [__meta_kubernetes_pod_container_name]
-            target_label: container
-          # Get app label
-          - source_labels: [__meta_kubernetes_pod_label_app]
-            target_label: app
-          # Get node name
-          - source_labels: [__meta_kubernetes_pod_node_name]
-            target_label: node
-          # Set the log path: /var/log/pods/<namespace>_<pod>_<uid>/<container>/*.log
-          - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_name, __meta_kubernetes_pod_uid, __meta_kubernetes_pod_container_name]
-            separator: /
-            regex: (.*)/(.*)/(.*)/(.*)
-            replacement: /var/log/pods/${1}_${2}_${3}/${4}/*.log
-            target_label: __path__
+          - labeldrop:
+              - filename
+          - regex:
+              expression: '/var/log/pods/(?P<namespace>[^_]+)_(?P<pod>[^_]+)_[^/]+/(?P<container>[^/]+)/.*\.log'
+          - labels:
+              namespace:
+              pod:
+              container:
 ---
 apiVersion: apps/v1
 kind: DaemonSet
