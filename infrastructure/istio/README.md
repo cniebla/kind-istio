@@ -7,7 +7,6 @@ Istio v1.28.2 installation and configuration for Kind cluster.
 | File | Description |
 |------|-------------|
 | `istio-operator.yaml` | IstioOperator manifest (demo profile) |
-| `gateway/default-gateway.yaml` | Default ingress gateway for all apps |
 
 ## Prerequisites
 
@@ -36,9 +35,6 @@ kubectl get pods -n istio-system
 
 # 4. Analyze configuration (optional)
 istioctl analyze -n istio-system
-
-# 5. Apply the default gateway
-kubectl apply -f infrastructure/istio/gateway/default-gateway.yaml
 ```
 
 ### Expected Pods
@@ -112,13 +108,6 @@ tracing:
 nodeSelector:
   ingress-ready: "true"
 ```
-
-### gateway/default-gateway.yaml
-
-Accepts all hosts on HTTP (port 80). Can be extended for:
-- HTTPS with TLS termination
-- Host-based routing
-- HTTP to HTTPS redirect
 
 ## Useful Commands
 
