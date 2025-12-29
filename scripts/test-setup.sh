@@ -170,10 +170,11 @@ test_istio() {
         test_fail "Ingress gateway is not running"
     fi
 
-    if istioctl verify-install &> /dev/null; then
-        test_pass "Istio installation verified"
+    # Check istiod is responding (verify-install removed in 1.28+)
+    if istioctl proxy-status &> /dev/null; then
+        test_pass "Istio control plane responding"
     else
-        test_fail "Istio installation verification failed"
+        test_fail "Istio control plane not responding"
     fi
 }
 
