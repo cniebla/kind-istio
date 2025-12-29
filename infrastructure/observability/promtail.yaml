@@ -121,7 +121,6 @@ spec:
             - containerPort: 3101
               name: http-metrics
           securityContext:
-            readOnlyRootFilesystem: true
             runAsGroup: 0
             runAsUser: 0
       tolerations:
