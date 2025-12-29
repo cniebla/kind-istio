@@ -20,8 +20,8 @@ Total memory limits: ~2.3Gi (vs ~4Gi+ for default addons)
 After deployment, use port-forwarding to access each UI:
 
 ```bash
-# Prometheus (metrics)
-kubectl port-forward -n istio-system svc/prometheus 9090:9090
+# Prometheus (metrics) - using 9091 to avoid conflict with local Prometheus
+kubectl port-forward -n istio-system svc/prometheus 9091:9090
 
 # Grafana (dashboards)
 kubectl port-forward -n istio-system svc/grafana 3000:3000
