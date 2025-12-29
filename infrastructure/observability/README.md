@@ -11,6 +11,7 @@ Resource-constrained observability addons for the Istio learning environment.
 | Kiali | Service mesh console | 512Mi | N/A |
 | Jaeger | Distributed tracing | 512Mi | 24 hours |
 | Loki | Log aggregation | 1Gi | 24 hours |
+| Promtail | Log collector (DaemonSet) | 128Mi per node | N/A |
 
 ## Resource Summary
 

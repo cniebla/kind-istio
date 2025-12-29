@@ -11,6 +11,7 @@ resources:
   - kiali.yaml
   - jaeger.yaml
   - loki.yaml
+  - promtail.yaml
 
 labels:
   - pairs:
