@@ -10,11 +10,11 @@ Resource-constrained observability addons for the Istio learning environment.
 | Grafana | Dashboards | 256Mi | N/A |
 | Kiali | Service mesh console | 512Mi | N/A |
 | Jaeger | Distributed tracing | 512Mi | 24 hours |
-| Loki | Log aggregation | 768Mi + 64Mi (sidecar) | 24 hours |
+| Loki | Log aggregation | 1Gi + 64Mi (sidecar) | 24 hours |
 
 ## Resource Summary
 
-Total memory limits: ~3.1Gi (vs ~4Gi+ for default addons)
+Total memory limits: ~3.3Gi (vs ~4Gi+ for default addons)
 
 ## Accessing the UIs
 

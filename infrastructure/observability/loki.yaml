@@ -327,7 +327,7 @@ spec:
               memory: 256Mi
             limits:
               cpu: 500m
-              memory: 768Mi
+              memory: 1Gi
         - name: loki-sc-rules
           image: "docker.io/kiwigrid/k8s-sidecar:1.30.10"
           imagePullPolicy: IfNotPresent
