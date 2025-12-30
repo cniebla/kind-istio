@@ -12,6 +12,7 @@ resources:
   - jaeger.yaml
   - loki.yaml
   - promtail.yaml
+  - telemetry.yaml
 
 labels:
   - pairs:

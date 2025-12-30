@@ -39,6 +39,17 @@ spec:
             # Reduce TTL to 24 hours for learning environment
             - name: BADGER_SPAN_STORE_TTL
               value: "24h"
+            # Enable Monitor (SPM) tab with Prometheus backend
+            - name: METRICS_STORAGE_TYPE
+              value: "prometheus"
+            - name: PROMETHEUS_SERVER_URL
+              value: "http://prometheus.istio-system.svc.cluster.local:9090"
+            - name: PROMETHEUS_QUERY_SUPPORT_SPANMETRICS_CONNECTOR
+              value: "true"
+            - name: PROMETHEUS_QUERY_NORMALIZE_CALLS
+              value: "true"
+            - name: PROMETHEUS_QUERY_NORMALIZE_DURATION
+              value: "true"
           livenessProbe:
             httpGet:
               path: /

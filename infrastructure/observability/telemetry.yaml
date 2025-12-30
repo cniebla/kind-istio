@@ -1,0 +1,14 @@
+# Istio Telemetry configuration for tracing
+# Enables the Jaeger tracing provider for all workloads in the mesh
+apiVersion: telemetry.istio.io/v1
+kind: Telemetry
+metadata:
+  name: mesh-default
+  namespace: istio-system
+spec:
+  # Enable tracing for all workloads
+  tracing:
+    - providers:
+        - name: jaeger
+      # 100% sampling for learning environment
+      randomSamplingPercentage: 100.0
