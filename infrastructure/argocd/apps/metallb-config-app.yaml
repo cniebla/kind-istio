@@ -1,0 +1,36 @@
+# MetalLB Load Balancer - IP Pool Configuration
+# Applies the IPAddressPool and L2Advertisement after MetalLB CRDs exist
+# Sync wave 1: runs after metallb-app (wave 0) installs CRDs
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb-config
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: metallb-config
+    app.kubernetes.io/part-of: kind-istio
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/cniebla/kind-istio.git
+    targetRevision: HEAD
+    path: infrastructure/metallb
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: metallb-system
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ApplyOutOfSyncOnly=true
+      # Required until metallb-app CRDs are fully established
+      - SkipDryRunOnMissingResource=true

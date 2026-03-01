@@ -1,0 +1,28 @@
+# MetalLB IP Address Pool for kind cluster
+# Default range is within the typical kind Docker network subnet (172.18.0.0/16)
+# Run scripts/configure-metallb.sh to auto-detect and apply the correct range
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: kind-pool
+  namespace: metallb-system
+  labels:
+    app.kubernetes.io/name: metallb-pool
+    app.kubernetes.io/part-of: kind-istio
+    app.kubernetes.io/managed-by: argocd
+spec:
+  addresses:
+    - 172.18.255.200-172.18.255.250
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: kind-l2
+  namespace: metallb-system
+  labels:
+    app.kubernetes.io/name: metallb-l2-advertisement
+    app.kubernetes.io/part-of: kind-istio
+    app.kubernetes.io/managed-by: argocd
+spec:
+  ipAddressPools:
+    - kind-pool

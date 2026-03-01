@@ -8,12 +8,14 @@ Platform-level components that provide the foundation for application workloads.
 |-----------|-----------|-------------|
 | Istio | `istio/` | Service mesh for traffic management and observability |
 | ArgoCD | `argocd/` | GitOps continuous delivery |
+| MetalLB | `metallb/` | Load balancer for `LoadBalancer` service types |
 | Observability | `observability/` | Prometheus, Grafana, Kiali, Jaeger, Loki, Promtail |
 
 ## Installation Order
 
 1. **Istio** - Install first (provides ingress gateway and service mesh)
 2. **ArgoCD** - Install second (manages application deployments)
+3. **MetalLB** - Deployed automatically via ArgoCD; run `./scripts/configure-metallb.sh` to set the IP pool
 
 ## Istio
 
@@ -33,6 +35,15 @@ GitOps controller providing:
 - Rollback capabilities
 
 See [argocd/README.md](argocd/README.md) for details.
+
+## MetalLB
+
+Load balancer providing:
+- Real external IPs for `LoadBalancer` service types (no more `<pending>`)
+- L2 advertisement via ARP on the Docker bridge network
+- IP pool auto-configured from the kind Docker network subnet
+
+See [metallb/README.md](metallb/README.md) for details.
 
 ## Observability
 
@@ -57,4 +68,5 @@ See [observability/README.md](observability/README.md) for details.
 |-----------|---------|
 | `istio-system` | Istio control plane and observability components |
 | `argocd` | ArgoCD server and controllers |
+| `metallb-system` | MetalLB controller and speaker |
 | `bookinfo` | Demo application (Istio sidecar injection enabled) |

@@ -10,6 +10,7 @@ Utility scripts for cluster and application management.
 | `get-argocd-password.sh` | Retrieve ArgoCD admin password |
 | `port-forward.sh` | Start port forwarding for ArgoCD UI |
 | `observability-ui.sh` | Port-forward all observability UIs (Grafana, Prometheus, etc.) |
+| `configure-metallb.sh` | Auto-detect Docker subnet and configure MetalLB IP address pool |
 | `test-setup.sh` | Validate the entire setup (cluster, Istio, ArgoCD, Bookinfo) |
 
 ## init-argocd.sh
@@ -81,6 +82,23 @@ Port-forwards all observability UIs for local access.
 | Kiali | http://localhost:20001 | Service mesh console |
 | Jaeger | http://localhost:16686 | Distributed tracing |
 | Loki | http://localhost:3100 | Log aggregation API |
+
+## configure-metallb.sh
+
+Auto-detects the kind Docker network subnet and configures MetalLB's IP address pool.
+
+```bash
+./configure-metallb.sh
+```
+
+### What it does
+
+1. Inspects the `kind` Docker network to determine the subnet (e.g. `172.18.0.0/16`)
+2. Computes a safe IP range at the top of that subnet (e.g. `172.18.255.200-172.18.255.250`)
+3. Waits for the MetalLB controller to be ready
+4. Applies the `IPAddressPool` and `L2Advertisement` resources
+
+Run this once after MetalLB is deployed by ArgoCD. Required if your Docker network uses a non-default subnet.
 
 ## test-setup.sh
 
