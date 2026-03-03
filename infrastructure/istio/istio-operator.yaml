@@ -57,23 +57,14 @@ spec:
               cpu: 500m
               memory: 256Mi
           service:
-            type: NodePort
+            type: LoadBalancer  # MetalLB assigns an IP from the kind-pool
             ports:
               - name: http2
                 port: 80
                 targetPort: 8080
-                nodePort: 30080
               - name: https
                 port: 443
                 targetPort: 8443
-                nodePort: 30443
-          # Schedule on control-plane node (has port mappings)
-          nodeSelector:
-            ingress-ready: "true"
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
 
     # Egress Gateway (enabled for demo profile)
     egressGateways:
