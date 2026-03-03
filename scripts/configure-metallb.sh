@@ -49,8 +49,10 @@ check_prerequisites() {
 
 get_kind_subnet() {
     local subnet
+    # println puts each subnet on its own line; grep -v ':' filters out IPv6
     subnet=$(docker network inspect "${DOCKER_NETWORK}" \
-        --format '{{range .IPAM.Config}}{{.Subnet}}{{end}}' 2>/dev/null | head -1)
+        --format '{{range .IPAM.Config}}{{println .Subnet}}{{end}}' 2>/dev/null \
+        | grep -v ':' | head -1)
 
     if [[ -z "${subnet}" ]]; then
         log_error "Could not inspect Docker network '${DOCKER_NETWORK}'"
@@ -72,13 +74,16 @@ compute_ip_range() {
 wait_for_metallb() {
     log_info "Waiting for MetalLB controller to be ready..."
 
-    if ! kubectl get deployment metallb-controller -n "${NAMESPACE}" &> /dev/null; then
+    # Use label selector to work with both Helm (metallb-controller) and native manifest (controller)
+    if ! kubectl get deployment -l app=metallb,component=controller \
+            -n "${NAMESPACE}" --no-headers 2>/dev/null | grep -q .; then
         log_error "MetalLB controller deployment not found in namespace '${NAMESPACE}'"
         log_error "Make sure MetalLB is installed (check ArgoCD or run: kubectl get pods -n ${NAMESPACE})"
         exit 1
     fi
 
-    kubectl wait --for=condition=Available deployment/metallb-controller \
+    kubectl wait --for=condition=Available deployment \
+        -l app=metallb,component=controller \
         -n "${NAMESPACE}" --timeout=120s
 }
 
