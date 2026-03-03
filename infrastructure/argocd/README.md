@@ -9,7 +9,10 @@ ArgoCD v3.2.3 installation and configuration for GitOps-based deployments.
 | `namespace.yaml` | ArgoCD namespace definition |
 | `install.yaml` | Installation info (actual manifest fetched from GitHub) |
 | `apps/root-app.yaml` | Root Application (App of Apps pattern) |
+| `apps/metallb-app.yaml` | MetalLB installation (Helm, sync wave 0) |
+| `apps/metallb-config-app.yaml` | MetalLB IP pool configuration (sync wave 1) |
 | `apps/bookinfo-app.yaml` | Bookinfo application definition |
+| `apps/observability-app.yaml` | Observability stack (Prometheus, Grafana, Kiali, Jaeger) |
 
 ## Quick Start
 
@@ -50,7 +53,9 @@ kubectl wait --for=condition=Ready pods --all -n argocd --timeout=300s
 
 ## Repository Authentication
 
-This is a **private repository**. ArgoCD needs credentials to access it.
+This repository is public on HTTPS — ArgoCD can sync without credentials. Select **"Skip"** at the credentials prompt in `init-argocd.sh`.
+
+Credentials are only needed if you switch to a private fork or SSH-based access.
 
 ### Option 1: SSH Key (Recommended)
 
@@ -93,8 +98,11 @@ This project uses the App of Apps pattern for managing deployments:
 
 ```
 root-app (infrastructure/argocd/apps/)
-├── root-app.yaml      → Manages this directory (self-referential)
-└── bookinfo-app.yaml  → Deploys apps/bookinfo/
+├── root-app.yaml           → Manages this directory (self-referential)
+├── metallb-app.yaml        → Installs MetalLB via Helm (wave 0)
+├── metallb-config-app.yaml → Configures IP address pool (wave 1)
+├── bookinfo-app.yaml       → Deploys apps/bookinfo/
+└── observability-app.yaml  → Deploys Prometheus, Grafana, Kiali, Jaeger
 ```
 
 ### How It Works

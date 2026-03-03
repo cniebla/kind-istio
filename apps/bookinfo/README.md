@@ -8,7 +8,7 @@ Istio's sample polyglot microservices application for demonstrating service mesh
                          ┌─────────────────────┐
                          │   Istio Ingress     │
                          │     Gateway         │
-                         │ (localhost:30000)   │
+                         │ (MetalLB LoadBalancer)│
                          └──────────┬──────────┘
                                     │
                                     ▼
@@ -92,13 +92,22 @@ kubectl get pods -n bookinfo -w
 
 ## Accessing the Application
 
-After deployment, access the productpage at:
+Get the ingress gateway external IP assigned by MetalLB:
 
-```
-http://localhost:30000/productpage
+```bash
+export GW=$(kubectl get svc istio-ingressgateway -n istio-system \
+  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+echo "http://$GW/productpage"
 ```
 
-Refresh the page multiple times to see different reviews versions (round-robin by default).
+From the macOS host, use port-forward instead:
+
+```bash
+kubectl port-forward svc/istio-ingressgateway -n istio-system 8888:80
+# Open: http://localhost:8888/productpage
+```
+
+Refresh multiple times to see different reviews versions (round-robin by default).
 
 ## Traffic Management Examples
 
@@ -315,9 +324,14 @@ kubectl get destinationrules -n bookinfo
 # Check gateway is created
 kubectl get gateway -n bookinfo
 
-# Check ingress gateway pods
-kubectl get pods -n istio-system -l app=istio-ingressgateway
+# Check the ingress gateway has an external IP (should not be <pending>)
+kubectl get svc istio-ingressgateway -n istio-system
 
-# Check gateway logs
+# If EXTERNAL-IP is <pending>, MetalLB may not be configured:
+kubectl get pods -n metallb-system
+./scripts/configure-metallb.sh
+
+# Check ingress gateway pods and logs
+kubectl get pods -n istio-system -l app=istio-ingressgateway
 kubectl logs -n istio-system -l app=istio-ingressgateway
 ```

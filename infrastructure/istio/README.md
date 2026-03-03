@@ -79,16 +79,25 @@ kubectl get namespace -L istio-injection
 
 ## Accessing Services via Ingress
 
-The ingress gateway is configured with NodePort on the control-plane node:
+The ingress gateway uses `type: LoadBalancer`. MetalLB assigns it an external IP from the Docker bridge network.
 
-| Protocol | Host Port | NodePort | URL |
-|----------|-----------|----------|-----|
-| HTTP | 30000 | 30000 | http://localhost:30000 |
-| HTTPS | 30001 | 30001 | https://localhost:30001 |
+```bash
+# Get the external IP
+kubectl get svc istio-ingressgateway -n istio-system
 
-Traffic flow: `localhost:30000 -> Kind node:30000 -> NodePort:30000 -> IngressGateway:80`
+# Example output:
+# NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)
+# istio-ingressgateway   LoadBalancer   10.96.x.x       172.18.255.200   80.../443...
+```
 
-**Note**: The ingress gateway service is patched to use NodePorts 30000/30001 which are directly mapped through Kind to the host.
+Traffic flow: `client -> MetalLB IP (L2 ARP) -> IngressGateway pod -> service mesh`
+
+**macOS note**: The MetalLB IP lives on the Docker bridge network inside the Linux VM. It is reachable from within kind containers but not directly from the macOS host. Use `kubectl port-forward` for local browser access:
+
+```bash
+kubectl port-forward svc/istio-ingressgateway -n istio-system 8888:80
+# Then open: http://localhost:8888/productpage
+```
 
 ## Configuration Details
 
@@ -104,9 +113,9 @@ accessLogFile: /dev/stdout
 tracing:
   sampling: 100.0
 
-# Ingress gateway on control-plane node
-nodeSelector:
-  ingress-ready: "true"
+# Ingress gateway: LoadBalancer type (MetalLB assigns external IP)
+service:
+  type: LoadBalancer
 ```
 
 ## Useful Commands
