@@ -74,16 +74,18 @@ compute_ip_range() {
 wait_for_metallb() {
     log_info "Waiting for MetalLB controller to be ready..."
 
-    # Use label selector to work with both Helm (metallb-controller) and native manifest (controller)
-    if ! kubectl get deployment -l app=metallb,component=controller \
-            -n "${NAMESPACE}" --no-headers 2>/dev/null | grep -q .; then
+    # Resolve the controller deployment name: Helm uses 'metallb-controller', native uses 'controller'
+    local controller_name
+    controller_name=$(kubectl get deployment -n "${NAMESPACE}" --no-headers 2>/dev/null \
+        | awk '{print $1}' | grep -E '^(metallb-)?controller$' | head -1)
+
+    if [[ -z "${controller_name}" ]]; then
         log_error "MetalLB controller deployment not found in namespace '${NAMESPACE}'"
         log_error "Make sure MetalLB is installed (check ArgoCD or run: kubectl get pods -n ${NAMESPACE})"
         exit 1
     fi
 
-    kubectl wait --for=condition=Available deployment \
-        -l app=metallb,component=controller \
+    kubectl wait --for=condition=Available "deployment/${controller_name}" \
         -n "${NAMESPACE}" --timeout=120s
 }
 
